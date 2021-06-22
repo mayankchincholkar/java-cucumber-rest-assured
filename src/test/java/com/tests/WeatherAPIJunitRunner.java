@@ -6,7 +6,11 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features",glue={"com.tests.steps"},monochrome = true,publish = true
+        features = "src/test/resources/features",glue={"com.tests.steps"},monochrome = true,publish = true,
+        plugin = {"pretty",
+                "html:target/cucumber-reports/cucumber.html",
+                "json:target/cucumber-reports/cucumber.json"
+        }
 )
 public class WeatherAPIJunitRunner {
 }

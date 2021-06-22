@@ -13,7 +13,7 @@ import org.junit.Assert;
 
 @Slf4j
 public class WeatherAPISteps {
-    private RequestSpecification request = RestAssured.given();
+    private final RequestSpecification request = RestAssured.given();
     private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
     private Response response;
 

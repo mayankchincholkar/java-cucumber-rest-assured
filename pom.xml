@@ -12,6 +12,7 @@
         <lombok.version>1.18.20</lombok.version>
         <slf4j.version>1.7.30</slf4j.version>
         <jackson.version>2.12.3</jackson.version>
+        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
     </properties>
     <groupId>org.example</groupId>
     <artifactId>Cucumber-RestAssured</artifactId>
@@ -84,8 +85,11 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version>5.5.3</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -106,6 +110,48 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>WeatherAPIJunitRunner.java</include>
+                    </includes>
+                    <parallel>methods</parallel>
+                    <threadCount>2</threadCount>
+                    <skipTests>${skip.it.tests}</skipTests>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.5.0</version>
+                <executions>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.it.tests}</skip>
+                            <outputDirectory>target/reports/html-reports</outputDirectory>
+                            <inputDirectory>target/cucumber-reports</inputDirectory>
+                            <jsonFiles>
+                                <param>**/*.json</param>
+                            </jsonFiles>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
